@@ -1,5 +1,6 @@
-// [START address-autocomplete.extension]
-export default async function Extension() {
+// [START address-autocomplete.ext-target]
+export default async () => {
+// [END address-autocomplete.ext-target]
 // [START address-autocomplete.attributes]
     const {field, value, selectedCountryCode} = shopify.target;
 // [END address-autocomplete.attributes]
@@ -43,4 +44,3 @@ async function fetchSuggestions(_field, _value, _selectedCountryCode, signal) {
   );
 }
 // [END address-autocomplete.fetch]
-// [END address-autocomplete.extension]
