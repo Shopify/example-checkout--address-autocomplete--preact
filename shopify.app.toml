@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "6c4f6d068f1bf05ccb86fe2ed134a686"
-name = "address-autocomplete"
+client_id = "1831bc050fba67bab787bcdcaac2eda8"
+name = "example-autocomplete-address"
 application_url = "https://shopify.dev/apps/default-app-home"
 embedded = true
 
