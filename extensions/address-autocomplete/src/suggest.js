@@ -2,7 +2,7 @@
 export default async () => {
 // [END address-autocomplete.ext-target]
 // [START address-autocomplete.attributes]
-    const {field, value, selectedCountryCode} = shopify.target;
+    const {field, value, selectedCountryCode, acceptedAddressInputFields} = shopify.target;
 // [END address-autocomplete.attributes]
 
 // [START address-autocomplete.fetch]
@@ -21,7 +21,10 @@ export default async () => {
         id: suggestion.global_address_key,
         label: suggestion.text,
         matchedSubstrings: suggestion.matched,
-        formattedAddress: suggestion.formattedAddress,
+        formattedAddress: toFormattedAddress(
+          suggestion.formattedAddress,
+          acceptedAddressInputFields
+        ),
       };
     });
 
@@ -44,3 +47,27 @@ async function fetchSuggestions(_field, _value, _selectedCountryCode, signal) {
   );
 }
 // [END address-autocomplete.fetch]
+
+// [START address-autocomplete.accepted-fields]
+/**
+ * Always return `address1` and `address2`. Keep `addressLineComponents` only for the
+ * components the buyer's country accepts, so a country that collects the street name
+ * and number separately receives them as separate values.
+ */
+function toFormattedAddress(
+  { addressLineComponents, ...address },
+  acceptedAddressInputFields = []
+) {
+  const acceptedComponents = Object.fromEntries(
+    Object.entries(addressLineComponents ?? {}).filter(([field]) =>
+      acceptedAddressInputFields.includes(field)
+    )
+  );
+
+  if (Object.keys(acceptedComponents).length === 0) {
+    return address;
+  }
+
+  return { ...address, addressLineComponents: acceptedComponents };
+}
+// [END address-autocomplete.accepted-fields]
